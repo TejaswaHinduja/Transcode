@@ -12,3 +12,5 @@ app.post("/upload",upload.single("video"),(req,res)=>{
     res.json({ filename: vid?.filename })
 })
 app.listen(4000)
+
+//multer used so that we can parse the multipart http request without any headache
