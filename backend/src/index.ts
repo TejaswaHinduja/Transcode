@@ -14,3 +14,4 @@ app.post("/upload",upload.single("video"),(req,res)=>{
 app.listen(4000)
 
 //multer used so that we can parse the multipart http request without any headache
+//multer is a I/O operation so that can run concurrently but if lets say the req res callback has some expensive operationt then requests would have to wait
