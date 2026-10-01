@@ -18,3 +18,4 @@ export const runTranscode=(outputPath:string)=>{
 );
 }
 
+//gpu h264_nvenc","-preset","fast
