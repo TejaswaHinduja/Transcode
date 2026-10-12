@@ -29,6 +29,10 @@ app.get("/vid/:vidId",(req,res)=>{
     
     res.sendFile(vidPath)
 })
+
+app.post("/transcode",(req,res)=>{
+    const worker=new Worker()
+})
 app.listen(4000)
 
 //multer used so that we can parse the multipart http request without any headache
