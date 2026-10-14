@@ -2,12 +2,12 @@ import { execFile } from "child_process"
 import path from "path"
 
 
-export const runTranscode=(outputPath:string)=>{
+export const runTranscode=(inputPath:string,outputPath:string)=>{
     
-    const inputPath=path.join(__dirname,"../../uploads/884f1dadd32cdab17c894928cd4ab794.mp4")
+    const inputPathmp4=path.join(__dirname,`../${inputPath}`)
     console.log("trancoding started")
     return execFile("ffmpeg", [
-  "-i", inputPath,"-vf","scale=-2:720",
+  "-i", inputPathmp4,"-vf","scale=-2:720",
   "-c:v", "libx264",
   outputPath
 ],(error)=>{
