@@ -15,24 +15,26 @@ const outputPath=path.join(__dirname,`../../uploads/${id}.mp4`)
 
 app.post("/upload",upload.single("video"),(req,res)=>{
     const vid=req.file
+    if(!vid){
+        return res.status(201).json({message:"no video provided"})
+    }
+    
+    runTranscode(outputPath)
     //@ts-ignore
-    console.log(vid.filename)
-    res.json({ filename: vid?.filename })
+    res.json({message:"transcoding starte", filename: vid?.filename })
 })
 app.get("/vid/:vidId",(req,res)=>{
     const vidId=req.params.vidId
     if(!vidId){
         return res.status(404)
     }
-    runTranscode(outputPath)
+    
     const vidPath=path.join(__dirname,"../../uploads",`${id}.mp4`)
     
     res.sendFile(vidPath)
 })
 
-app.post("/transcode",(req,res)=>{
-    const worker=new Worker()
-})
+
 app.listen(4000)
 
 //multer used so that we can parse the multipart http request without any headache
