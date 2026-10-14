@@ -21,7 +21,6 @@ app.post("/upload",upload.single("video"),(req,res)=>{
     const inputPath=req.file.path
     const inputPathmp4=`${inputPath}.mp4`
     fs.renameSync(inputPath,inputPathmp4)//this is blocking , why not use await rename instead?well nobody using my app so I dont care Lmao
-    console.log(inputPath)
     
     runTranscode(inputPathmp4,outputPath)
    

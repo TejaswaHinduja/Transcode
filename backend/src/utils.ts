@@ -19,5 +19,5 @@ export const runTranscode=(inputPath:string,outputPath:string)=>{
 }
 );
 }
-
+//todo build a hls playlist 
 //gpu h264_nvenc","-preset","fast
