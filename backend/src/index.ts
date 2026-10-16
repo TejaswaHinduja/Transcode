@@ -34,8 +34,9 @@ app.get("/vid/:vidId",(req,res)=>{
     if(!vidId){
         return res.status(404).end()
     }
+    const vidPath=path.join(__dirname,`../../uploads/${vidId}/${vidId}.m3u8`)
     
-    res.redirect(`/streams/${vidId}/${vidId}.m3u8`)
+    res.sendFile(vidPath)
 })
 
 
