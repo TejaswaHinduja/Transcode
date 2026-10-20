@@ -38,7 +38,7 @@ app.get("/vid/:vidId",(req,res)=>{
     
     res.sendFile(vidPath)
 })
-
+// we would need to use express.static here
 
 app.listen(4000)
 
