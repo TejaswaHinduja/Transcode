@@ -4,9 +4,14 @@ import path from "path"
 import { runTranscode } from "./utils"
 import crypto from "crypto"
 import fs from "fs"
-
+import cors from "cors"
 const app=express()
 app.use(express.json())
+
+app.use(cors({
+    origin:"http://localhost:4000",
+    credentials:true
+}))
 
 const uploadsDir = path.join(__dirname, "../../uploads")
 fs.mkdirSync(uploadsDir, { recursive: true })
