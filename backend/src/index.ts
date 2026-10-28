@@ -11,7 +11,7 @@ app.use(express.json())
 app.use(cors({
     origin:"http://localhost:4000",
     credentials:true
-}))
+})) 
 
 const uploadsDir = path.join(__dirname, "../../uploads")
 fs.mkdirSync(uploadsDir, { recursive: true })
@@ -43,6 +43,7 @@ app.get("/vid/:vidId",(req,res)=>{
     
     res.sendFile(vidPath)
 })
+app.use("/hls",express.static(path.join(__dirname,`../../uploads`)) )
 // we would need to use express.static here
 
 app.listen(4000)
