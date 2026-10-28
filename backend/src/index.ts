@@ -9,7 +9,7 @@ const app=express()
 app.use(express.json())
 
 app.use(cors({
-    origin:"http://localhost:4000",
+    origin:"http://localhost:3000",
     credentials:true
 })) 
 
@@ -43,7 +43,6 @@ app.get("/vid/:vidId",(req,res)=>{
     
     res.sendFile(vidPath)
 })
-app.use("/hls",express.static(path.join(__dirname,`../../uploads`)) )
 // we would need to use express.static here
 
 app.listen(4000)
