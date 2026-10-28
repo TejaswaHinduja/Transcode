@@ -11,51 +11,20 @@ type VideoItem = {
   previewUrl?: string;
 };
 
-const initialVideos: VideoItem[] = [
-  {
-    id: 1,
-    name: 'product-demo.mp4',
-    size: '128 MB',
-    uploadedAt: '2 hours ago',
-    status: 'Ready',
-  },
-  {
-    id: 2,
-    name: 'brand-video.mp4',
-    size: '96 MB',
-    uploadedAt: 'Today',
-    status: 'Processing',
-  },
-];
+
 
 export default function Dashboard() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [videos, setVideos] = useState<VideoItem[]>(initialVideos);
+  const [videos, setVideos] = useState<VideoItem[]>([]);
   const [isDragging, setIsDragging] = useState(false);
 
-  const formatFileSize = (bytes: number) => {
-    if (bytes < 1024) return `${bytes} B`;
-    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
-  };
+
 
   const handleFiles = (incomingFiles: FileList | null) => {
     if (!incomingFiles) return;
 
-    const newVideos = Array.from(incomingFiles)
-      .filter((file) => file.type === 'video/mp4' || file.name.toLowerCase().endsWith('.mp4'))
-      .map((file) => ({
-        id: Date.now() + Math.random(),
-        name: file.name,
-        size: formatFileSize(file.size),
-        uploadedAt: 'Just now',
-        status: 'Queued' as const,
-        previewUrl: URL.createObjectURL(file),
-      }));
-
-    if (newVideos.length) {
-      setVideos((current) => [...newVideos, ...current]);
-    }
+   
+   
   };
 
   const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -69,10 +38,7 @@ export default function Dashboard() {
     handleFiles(event.dataTransfer.files);
   };
 
-  const totalSize = videos.reduce((sum, video) => {
-    const numericSize = Number.parseFloat(video.size);
-    return sum + (Number.isNaN(numericSize) ? 0 : numericSize);
-  }, 0);
+  
 
   const readyCount = videos.filter((video) => video.status === 'Ready').length;
 
@@ -81,7 +47,7 @@ export default function Dashboard() {
       <div className="mx-auto max-w-7xl px-6 py-8">
         <header className="mb-8 flex items-center justify-between">
           <div>
-            <p className="text-sm uppercase tracking-[0.24em] text-cyan-300">Dashboard</p>
+            
             <h1 className="mt-2 text-3xl font-semibold text-white">Video Manager</h1>
           </div>
 
@@ -96,22 +62,6 @@ export default function Dashboard() {
             <div className="mt-3 flex items-end justify-between">
               <span className="text-3xl font-bold text-white">{videos.length}</span>
               <span className="rounded-full bg-emerald-500/15 px-2 py-1 text-xs text-emerald-300">+12%</span>
-            </div>
-          </div>
-
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-5 shadow-xl shadow-slate-950/20">
-            <p className="text-sm text-slate-400">Ready to share</p>
-            <div className="mt-3 flex items-end justify-between">
-              <span className="text-3xl font-bold text-white">{readyCount}</span>
-              <span className="rounded-full bg-cyan-500/15 px-2 py-1 text-xs text-cyan-300">Live</span>
-            </div>
-          </div>
-
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-5 shadow-xl shadow-slate-950/20">
-            <p className="text-sm text-slate-400">Storage used</p>
-            <div className="mt-3 flex items-end justify-between">
-              <span className="text-3xl font-bold text-white">{totalSize.toFixed(1)} MB</span>
-              <span className="rounded-full bg-violet-500/15 px-2 py-1 text-xs text-violet-300">4.2 GB</span>
             </div>
           </div>
         </section>
@@ -232,19 +182,13 @@ export default function Dashboard() {
               <h3 className="text-lg font-semibold text-white">Processing queue</h3>
               <div className="mt-4 space-y-4">
                 <div>
-                  <div className="mb-1 flex items-center justify-between text-sm text-slate-300">
-                    <span>Brand campaign</span>
-                    <span>72%</span>
-                  </div>
+                  
                   <div className="h-2 rounded-full bg-slate-800">
                     <div className="h-2 w-[72%] rounded-full bg-cyan-400" />
                   </div>
                 </div>
                 <div>
-                  <div className="mb-1 flex items-center justify-between text-sm text-slate-300">
-                    <span>Interview cut</span>
-                    <span>42%</span>
-                  </div>
+                  
                   <div className="h-2 rounded-full bg-slate-800">
                     <div className="h-2 w-[42%] rounded-full bg-violet-400" />
                   </div>
