@@ -1,4 +1,4 @@
-
+"use client"
 import Image from "next/image";
 import '@videojs/react/video/skin.css';
 import { VideoPlayer, VideoSkin } from '@videojs/react/video';
@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <VideoPlayer>
       <VideoSkin style={{ width: '100%', aspectRatio: '16 / 9' }}>
-      <HlsJsVideo src={`http://localhost:4000/hls/uploads/${id}/${id}.m3u8`} playsInline />
+      <HlsJsVideo src={`http://localhost:4000/streams/${id}/${id}.m3u8`} playsInline />
       </VideoSkin>
     </VideoPlayer>
   );
