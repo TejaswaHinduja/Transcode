@@ -5,13 +5,10 @@ import { ChangeEvent, DragEvent, useRef, useState } from 'react';
 type VideoItem = {
   id: number;
   name: string;
-  size: string;
   uploadedAt: string;
   status: 'Ready' | 'Processing' | 'Queued';
   previewUrl?: string;
 };
-
-
 
 export default function Dashboard() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -19,12 +16,9 @@ export default function Dashboard() {
   const [isDragging, setIsDragging] = useState(false);
 
 
-
   const handleFiles = (incomingFiles: FileList | null) => {
     if (!incomingFiles) return;
 
-   
-   
   };
 
   const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -38,22 +32,14 @@ export default function Dashboard() {
     handleFiles(event.dataTransfer.files);
   };
 
-  
-
-  const readyCount = videos.filter((video) => video.status === 'Ready').length;
 
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100">
       <div className="mx-auto max-w-7xl px-6 py-8">
         <header className="mb-8 flex items-center justify-between">
           <div>
-            
             <h1 className="mt-2 text-3xl font-semibold text-white">Video Manager</h1>
           </div>
-
-          <button className="rounded-full border border-cyan-400/40 bg-cyan-500/10 px-4 py-2 text-sm font-medium text-cyan-200 transition hover:bg-cyan-500/20">
-            New upload
-          </button>
         </header>
 
         <section className="mb-8 grid gap-4 md:grid-cols-3">
@@ -61,7 +47,6 @@ export default function Dashboard() {
             <p className="text-sm text-slate-400">Total videos</p>
             <div className="mt-3 flex items-end justify-between">
               <span className="text-3xl font-bold text-white">{videos.length}</span>
-              <span className="rounded-full bg-emerald-500/15 px-2 py-1 text-xs text-emerald-300">+12%</span>
             </div>
           </div>
         </section>
@@ -138,7 +123,7 @@ export default function Dashboard() {
                     <div className="min-w-0 flex-1">
                       <p className="truncate font-medium text-white">{video.name}</p>
                       <div className="mt-1 flex items-center gap-3 text-xs text-slate-400">
-                        <span>{video.size}</span>
+                       
                         <span>•</span>
                         <span>{video.uploadedAt}</span>
                       </div>
@@ -161,41 +146,7 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <aside className="space-y-6">
-            <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-5">
-              <h3 className="text-lg font-semibold text-white">Quick actions</h3>
-              <div className="mt-4 space-y-3">
-                {['Trim video', 'Add subtitles', 'Compress file', 'Export to web'].map((action) => (
-                  <button
-                    key={action}
-                    type="button"
-                    className="flex w-full items-center justify-between rounded-2xl border border-slate-800 bg-slate-950/70 px-4 py-3 text-left text-sm text-slate-200 transition hover:border-cyan-500/50 hover:text-white"
-                  >
-                    <span>{action}</span>
-                    <span className="text-cyan-300">→</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-5">
-              <h3 className="text-lg font-semibold text-white">Processing queue</h3>
-              <div className="mt-4 space-y-4">
-                <div>
-                  
-                  <div className="h-2 rounded-full bg-slate-800">
-                    <div className="h-2 w-[72%] rounded-full bg-cyan-400" />
-                  </div>
-                </div>
-                <div>
-                  
-                  <div className="h-2 rounded-full bg-slate-800">
-                    <div className="h-2 w-[42%] rounded-full bg-violet-400" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </aside>
+        
         </section>
       </div>
     </main>
