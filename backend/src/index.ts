@@ -32,7 +32,7 @@ app.post("/upload",upload.single("video"),(req,res)=>{
 
     runTranscode(inputPath,segmentPath,outputPath)
    
-    res.json({message:"transcoding started", playlist:`/vid/${id}` })
+    res.json({ playlist:`/vid/${id}` })
 })
 app.get("/vid/:vidId",(req,res)=>{
     const vidId=req.params.vidId
