@@ -1,6 +1,6 @@
 'use client';
 
-import { ChangeEvent, DragEvent, useRef, useState } from 'react';
+import { ChangeEvent, DragEvent, useEffect, useRef, useState } from 'react';
 
 type VideoItem = {
   id: number;
@@ -15,7 +15,16 @@ export default function Dashboard() {
   const [videos, setVideos] = useState<VideoItem[]>([]);
   const [isDragging, setIsDragging] = useState(false);
 
+  async function onVideoUpload(){
+    const res=await fetch("http://localhost:4000/upload",{
+      method:"POST",
 
+      body:videos
+    }
+
+    console.log(res.message)
+    )
+  }
   const handleFiles = (incomingFiles: FileList | null) => {
     if (!incomingFiles) return;
 
