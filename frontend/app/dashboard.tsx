@@ -18,12 +18,11 @@ export default function Dashboard() {
   async function onVideoUpload(){
     const res=await fetch("http://localhost:4000/upload",{
       method:"POST",
-
       body:videos
-    }
-
-    console.log(res.message)
-    )
+    })
+    
+    console.log(res)
+    
   }
   const handleFiles = (incomingFiles: FileList | null) => {
     if (!incomingFiles) return;
