@@ -1,4 +1,5 @@
 import { execFile } from "child_process"
+import { error } from "console"
 import path from "path"
 
 
@@ -24,3 +25,15 @@ export const runTranscode = (inputPath: string, segmentPath: string, outputPath:
     )
 }
 //gpu h264_nvenc","-preset","fast
+
+export function genThumbnails(inputPath:string,outputPath:string){
+    return execFile("ffmpeg",[
+        "-i" , path.resolve(inputPath) 
+  ,"-vf" ,"fps=1/5,scale=160:90","tile=10x10" ,
+  "-frames:v" ,"1" ,
+  outputPath
+    ],(error)=>{
+        console.error(error)
+        return
+    })
+}
