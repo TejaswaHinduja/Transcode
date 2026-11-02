@@ -24,13 +24,14 @@ app.post("/upload",upload.single("video"),async (req,res)=>{
     }
     const id=crypto.randomUUID().slice(0,6)
     const inputPath=req.file.path
+    console.log(inputPath)
     const outputDir=path.join(uploadsDir,id)
     const outputPath=path.join(outputDir,`${id}.m3u8`)
     const segmentPath=path.join(outputDir,`${id}-%03d.ts`)
     fs.mkdirSync(outputDir, { recursive: true })
-    const thumbPath=path.join(outputDir,`thum${id}`)
-    runTranscode(inputPath,segmentPath,outputPath)
-    genThumbnails(outputPath,thumbPath)
+    const thumbPath=path.join(outputDir,`thum${id}.png`)
+    //runTranscode(inputPath,segmentPath,outputPath)
+    //genThumbnails(inputPath,thumbPath)
     res.json({ msg:"transcoding started",playlist:`/vid/${id}` })
 })
 app.get("/vid/:vidId",(req,res)=>{
