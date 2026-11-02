@@ -50,4 +50,3 @@ export function genThumbnails(inputPath: string, outputPath: string) {
     );
 }
 
-genThumbnails("../uploads/0de6d0246cc479caa51c2f386e210fd3.mp4", "thum.png");

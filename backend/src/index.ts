@@ -30,8 +30,8 @@ app.post("/upload",upload.single("video"),async (req,res)=>{
     const segmentPath=path.join(outputDir,`${id}-%03d.ts`)
     fs.mkdirSync(outputDir, { recursive: true })
     const thumbPath=path.join(outputDir,`thum${id}.png`)
-    //runTranscode(inputPath,segmentPath,outputPath)
-    //genThumbnails(inputPath,thumbPath)
+    runTranscode(inputPath,segmentPath,outputPath)
+    genThumbnails(inputPath,thumbPath)
     res.json({ msg:"transcoding started",playlist:`/vid/${id}` })
 })
 app.get("/vid/:vidId",(req,res)=>{
