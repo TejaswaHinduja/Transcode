@@ -1,7 +1,8 @@
 import express from "express"
 import multer from "multer"
 import path from "path"
-import { runTranscode,genThumbnails } from "./utils"
+import { runTranscode } from "./utils"
+import { genThumbnails } from "./vtt"
 import crypto from "crypto"
 import fs from "fs"
 import cors from "cors"
@@ -31,7 +32,7 @@ app.post("/upload",upload.single("video"),async (req,res)=>{
     fs.mkdirSync(outputDir, { recursive: true })
     const thumbPath=path.join(outputDir,`thum${id}.png`)
     runTranscode(inputPath,segmentPath,outputPath)
-    genThumbnails(inputPath,thumbPath)
+    genThumbnails(inputPath,thumbPath,id)
     res.json({ msg:"transcoding started",playlist:`/vid/${id}` })
 })
 app.get("/vid/:vidId",(req,res)=>{

@@ -1,76 +1,113 @@
+import { execFile } from "child_process";
+import path from "path";
+import fs from "fs/promises";
 
-import fs from "node:fs/promises";
-import path from "node:path";
-
-const INTERVAL = 5; 
+const INTERVAL = 5;
 const TILE_W = 160;
 const TILE_H = 90;
-
 const COLS = 10;
 const ROWS = 10;
 const PER_SHEET = COLS * ROWS;
 
-function formatTimestamp(seconds: number): string {
-  const totalMs = Math.round(seconds * 1000);
+function formatTimestamp(seconds: number) {
+    const totalMs = Math.round(seconds * 1000);
 
-  const hours = Math.floor(totalMs / 3_600_000);
-  const minutes = Math.floor((totalMs % 3_600_000) / 60_000);
-  const secs = Math.floor((totalMs % 60_000) / 1000);
-  const ms = totalMs % 1000;
+    const h = Math.floor(totalMs / 3600000);
+    const m = Math.floor((totalMs % 3600000) / 60000);
+    const s = Math.floor((totalMs % 60000) / 1000);
+    const ms = totalMs % 1000;
 
-  return (
-    `${String(hours).padStart(2, "0")}:` +
-    `${String(minutes).padStart(2, "0")}:` +
-    `${String(secs).padStart(2, "0")}.` +
-    `${String(ms).padStart(3, "0")}`
-  );
+    return (
+        `${String(h).padStart(2, "0")}:` +
+        `${String(m).padStart(2, "0")}:` +
+        `${String(s).padStart(2, "0")}.` +
+        `${String(ms).padStart(3, "0")}`
+    );
 }
 
-export function makeVtt(
-  durationSec: number,
-  sheetName = `thumb{id}.png`
-): string {
-  if (!Number.isFinite(durationSec) || durationSec <= 0) {
-    throw new Error("Invalid video duration");
-  }
+function makeVtt(duration: number, sheetName: string) {
+    const count = Math.ceil(duration / INTERVAL);
+    let output = "WEBVTT\n\n";
 
-  const count = Math.ceil(durationSec / INTERVAL);
+    for (let i = 0; i < count; i++) {
+        const start = i * INTERVAL;
+        const end = Math.min(start + INTERVAL, duration);
 
-  let output = "WEBVTT\n\n";
+        const index = i % PER_SHEET;
+        const sheet = Math.floor(i / PER_SHEET);
 
-  for (let i = 0; i < count; i++) {
-    const start = i * INTERVAL;
-    const end = Math.min(start + INTERVAL, durationSec);
+        const col = index % COLS;
+        const row = Math.floor(index / COLS);
 
-    const indexInSheet = i % PER_SHEET;
-    const sheetIndex = Math.floor(i / PER_SHEET);
+        const x = col * TILE_W;
+        const y = row * TILE_H;
 
-    const col = indexInSheet % COLS;
-    const row = Math.floor(indexInSheet / COLS);
+        output +=
+            `${formatTimestamp(start)} --> ${formatTimestamp(end)}\n` +
+            `${sheetName}-${sheet}.jpg#xywh=${x},${y},${TILE_W},${TILE_H}\n\n`;
+    }
 
-    const x = col * TILE_W;
-    const y = row * TILE_H;
-
-    const image = `${sheetName}-${sheetIndex}.jpg`;
-
-    output +=
-      `${formatTimestamp(start)} --> ${formatTimestamp(end)}\n` +
-      `${image}#xywh=${x},${y},${TILE_W},${TILE_H}\n\n`;
-  }
-
-  return output;
+    return output;
 }
 
-export async function generateVtt(
-  durationSec: number,
-  outputDir: string,
-  sheetName = "storyboard"
-): Promise<void> {
-  const vttContent = makeVtt(durationSec, sheetName);
+export function genThumbnails(
+    inputPath: string,
+    outputDir: string,
+    id: string
+) {
+    return new Promise<void>((resolve, reject) => {
+        const input = path.resolve(inputPath);
+        const spritePath = path.join(outputDir, `${id}-0.jpg`);
 
-  const outputPath = path.join(outputDir, "thumbnails.vtt");
+        console.log("Generating thumbnails...");
 
-  await fs.writeFile(outputPath, vttContent, "utf-8");
+        execFile(
+            "ffmpeg",
+            [
+                "-y",
+                "-i", input,
+                "-vf", `fps=1/${INTERVAL},scale=${TILE_W}:${TILE_H},tile=${COLS}x${ROWS}`,
+                "-frames:v", "1",
+                spritePath
+            ],
+            async (error, stdout, stderr) => {
+                if (error) {
+                    console.error("Thumbnail generation failed:", stderr);
+                    return reject(error);
+                }
 
-  console.log("VTT generated:", outputPath);
+                try {
+                    
+                    const duration = await new Promise<number>((res, rej) => {
+                        execFile(
+                            "ffprobe",
+                            [
+                                "-v", "error",
+                                "-show_entries", "format=duration",
+                                "-of", "default=noprint_wrappers=1:nokey=1",
+                                input
+                            ],
+                            (err, stdout) => {
+                                if (err) return rej(err);
+                                res(Number(stdout.trim()));
+                            }
+                        );
+                    });
+
+                    const vtt = makeVtt(duration, id);
+
+                    await fs.writeFile(
+                        path.join(outputDir, "thumbnails.vtt"),
+                        vtt,
+                        "utf-8"
+                    );
+
+                    console.log("Sprite and VTT generated!");
+                    resolve();
+                } catch (err) {
+                    reject(err);
+                }
+            }
+        );
+    });
 }

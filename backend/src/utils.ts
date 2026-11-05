@@ -27,29 +27,3 @@ export const runTranscode = (inputPath: string, segmentPath: string, outputPath:
     )
 }
 //gpu h264_nvenc","-preset","fast
-export function genThumbnails(inputPath: string, outputPath: string) {
-    console.log("started");
-    return execFile(
-        "ffmpeg",
-        [
-            "-i",
-            path.resolve(inputPath),
-            "-vf",
-            "fps=1/5,scale=160:90,tile=10x10",
-            "-frames:v",
-            "1",
-            path.resolve(outputPath)
-        ],
-        (error) => {
-            if (error) {
-                console.error("FFmpeg Error:", error);
-                return;
-            }
-            console.log("completed");
-        }
-    );
-}
-
-export function genVtt(inputPath:string){
-    const timeinterva=5
-}
