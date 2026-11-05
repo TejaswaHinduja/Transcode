@@ -50,3 +50,6 @@ export function genThumbnails(inputPath: string, outputPath: string) {
     );
 }
 
+export function genVtt(inputPath:string){
+    const timeinterva=5
+}

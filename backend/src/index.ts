@@ -14,7 +14,7 @@ app.use(cors({
 })) 
 
 const uploadsDir = path.join(__dirname, "../../uploads")
-fs.mkdirSync(uploadsDir, { recursive: true })
+//fs.mkdirSync(uploadsDir, { recursive: true })
 const upload=multer({dest: uploadsDir})
 app.use("/streams", express.static(uploadsDir))
 
