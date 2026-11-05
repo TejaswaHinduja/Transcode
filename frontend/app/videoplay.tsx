@@ -5,14 +5,15 @@ import { VideoPlayer, VideoSkin } from '@videojs/react/video';
 import { HlsJsVideo } from '@videojs/react/media/hlsjs-video'
 
 
-const id="9362e9"
+ const id=50e865
 export default function VideoComponent() {
+ 
   return (
     
     <VideoPlayer>
       <VideoSkin style={{ width: '100%', aspectRatio: '16 / 9' }}>
-      <HlsJsVideo src={`http://localhost:4000/streams/${id}/${id}.m3u8`} playsInline >
-      <track kind="metadata" label="thumbnail"/>
+      <HlsJsVideo src={`http://localhost:4000/streams/50e865/50e865.m3u8`} playsInline crossOrigin="anonymous" >
+      <track kind="metadata" label="thumbnail" src={`http://localhost:4000/thumbnails/50e865/thumbnails.vtt`} default/>
       </HlsJsVideo>
     
       </VideoSkin>
