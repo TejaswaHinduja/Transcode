@@ -18,6 +18,7 @@ const uploadsDir = path.join(__dirname, "../../uploads")
 //fs.mkdirSync(uploadsDir, { recursive: true })
 const upload=multer({dest: uploadsDir})
 app.use("/streams", express.static(uploadsDir))
+app.use("/thumbnails",express.static(uploadsDir))
 
 app.post("/upload",upload.single("video"),async (req,res)=>{
     if(!req.file){
@@ -30,7 +31,6 @@ app.post("/upload",upload.single("video"),async (req,res)=>{
     const outputPath=path.join(outputDir,`${id}.m3u8`)
     const segmentPath=path.join(outputDir,`${id}-%03d.ts`)
     fs.mkdirSync(outputDir, { recursive: true })
-    const thumbPath=path.join(outputDir,`thum${id}.png`)
     runTranscode(inputPath,segmentPath,outputPath)
     genThumbnails(inputPath,outputDir,id)
     res.json({ msg:"transcoding started",playlist:`/vid/${id}` })
