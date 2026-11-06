@@ -25,7 +25,7 @@ function formatTimestamp(seconds: number) {
     );
 }
 
-function makeVtt(duration: number, sheetName: string) {
+function makeVtt(duration: number, id: string) {
     const count = Math.ceil(duration / INTERVAL);
     let output = "WEBVTT\n\n";
 
@@ -41,10 +41,10 @@ function makeVtt(duration: number, sheetName: string) {
 
         const x = col * TILE_W;
         const y = row * TILE_H;
-
+        const imageurl=`http://localhost:4000/uploads/${id}/${id}-${sheet}.jpg`;
         output +=
             `${formatTimestamp(start)} --> ${formatTimestamp(end)}\n` +
-            `${sheetName}-${sheet}.jpg#xywh=${x},${y},${TILE_W},${TILE_H}\n\n`;
+            `${imageurl}#xywh=${x},${y},${TILE_W},${TILE_H}\n\n`;
     }
 
     return output;

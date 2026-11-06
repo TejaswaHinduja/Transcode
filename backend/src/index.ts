@@ -19,6 +19,7 @@ const uploadsDir = path.join(__dirname, "../../uploads")
 const upload=multer({dest: uploadsDir})
 app.use("/streams", express.static(uploadsDir))
 app.use("/thumbnails",express.static(uploadsDir))
+app.use("/uploads",express.static(uploadsDir))
 
 app.post("/upload",upload.single("video"),async (req,res)=>{
     if(!req.file){
