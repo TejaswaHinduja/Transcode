@@ -4,7 +4,7 @@ import '@videojs/react/video/skin.css';
 import { VideoPlayer, VideoSkin } from '@videojs/react/video';
 import { HlsJsVideo } from '@videojs/react/media/hlsjs-video';
 
-const id = "50e865";
+const id = "495d7a";
 
 interface CueData {
   startTime: number;
